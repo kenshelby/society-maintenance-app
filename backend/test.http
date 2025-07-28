@@ -1,0 +1,8 @@
+### Admin Login
+POST http://localhost:5000/api/admin/login
+Content-Type: application/json
+
+{
+  "email": "admin@society.com",
+  "password": "admin123"
+}
