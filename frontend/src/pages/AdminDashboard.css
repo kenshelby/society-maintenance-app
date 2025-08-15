@@ -1,0 +1,71 @@
+/* Navbar */
+.navbar {
+    padding: 10px 20px;
+    background-color: DodgerBlue;
+    color: white;
+    display: flex;
+    justify-content: center; /* Centers title */
+    align-items: center;
+    position: relative; /* Allows hamburger absolute positioning */
+  }
+  
+  .navbar h1 {
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  /* Hamburger icon */
+  .navbar .hamburger {
+    position: absolute;
+    left: 20px;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  
+  /* Sidebar */
+  .sidebar {
+    background-color: #333;
+    width: 0; /* closed by default */
+    overflow-x: hidden;
+    transition: width 0.3s ease;
+    padding-top: 20px;
+    min-height: calc(100vh - 50px); /* full height minus navbar */
+  }
+  
+  .sidebar.open {
+    width: 250px;
+  }
+  
+  /* Sidebar items */
+  .sidebar h2 {
+    padding-left: 20px;
+    margin: 0 0 10px;
+  }
+  
+  .sidebar-item {
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  .sidebar-item:hover {
+    background-color: #444;
+  }
+  
+  /* Logout item */
+  .sidebar-item.logout {
+    color: lightcoral;
+  }
+  
+  .sidebar-item.logout:hover {
+    background-color: #770000;
+  }
+  
+  /* Close button */
+  .sidebar-item.close {
+    color: lightblue;
+  }
+  
+  .sidebar-item.close:hover {
+    background-color: #004477;
+  }
+  
