@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import API from '../utils/api';
 import { useNavigate } from 'react-router-dom';
+import API from '../utils/api';
 
 const Login = () => {
   const [formData, setFormData] = useState({ emailOrUsername: '', password: '' });
@@ -14,20 +14,15 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-
     try {
-      // Determine if input is email or username
       const payload = formData.emailOrUsername.includes('@')
         ? { email: formData.emailOrUsername, password: formData.password }
         : { username: formData.emailOrUsername, password: formData.password };
 
       const { data } = await API.post('/auth/login', payload);
-
-      // Save token & role
       localStorage.setItem('token', data.token);
       localStorage.setItem('role', data.role);
 
-      // Redirect based on role
       if (data.role === 'admin') {
         navigate('/admin-dashboard');
       } else {
@@ -39,35 +34,47 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-80">
-        <h2 className="text-xl mb-4 text-center font-bold">Login</h2>
-        {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
-        <input
-          type="text"
-          name="emailOrUsername"
-          placeholder="Email or Username"
-          value={formData.emailOrUsername}
-          onChange={handleChange}
-          className="w-full p-2 border mb-3 rounded"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="w-full p-2 border mb-3 rounded"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white p-2 rounded"
+    <div className="min-h-screen flex">
+      {/* Left side */}
+      <div className="w-1/2 bg-pink-200 flex items-center justify-center">
+        <h1 className="text-4xl font-bold text-pink-700">Welcome Back!</h1>
+      </div>
+
+      {/* Right side - login form in box */}
+      <div className="w-1/2 flex items-center justify-center bg-white">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm"
         >
-          Login
-        </button>
-      </form>
+          <h2 className="text-2xl mb-6 font-semibold text-center">Login</h2>
+          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+
+          <input
+            type="text"
+            name="emailOrUsername"
+            placeholder="Email or Username"
+            value={formData.emailOrUsername}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded mb-4"
+            required
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            className="w-full p-3 border border-gray-300 rounded mb-6"
+            required
+          />
+          <button
+            type="submit"
+            className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 rounded"
+          >
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
