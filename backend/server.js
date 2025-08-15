@@ -9,6 +9,7 @@ const userRoutes = require('./routes/userRoutes');
 const flatRoutes = require('./routes/flatRoutes');
 const complaintRoutes = require('./routes/complaintRoutes');
 const authRoutes = require('./routes/authRoutes');
+const morgan = require('morgan');
 
 dotenv.config();
 connectDB();
@@ -17,7 +18,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
 // app.get('/api/protected', protect, (req, res) => {
 //     res.json({ message: 'You are authorized!', user: req.user || req.admin });
 // });
@@ -25,8 +25,13 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.send('APP HAS STARTED');
 });
+app.post('/api/auth/login', (req, res, next) => {
+  console.log('Probe hit. Body:', req.body);
+  next(); // let your real auth route handle it
+});
 
-app.use(express.json());
+
+app.use(morgan('dev'));
 // Routes
 app.use('/api/admin', adminRoutes);
 app.use('/api/user', userRoutes);

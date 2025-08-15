@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
 const User = require('../models/User');
+const bcrypt = require('bcryptjs');
 
 const generateToken = (id, role) => {
   return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: '7d' });
@@ -9,12 +10,17 @@ const generateToken = (id, role) => {
 // Generic login for Admin and User
 exports.login = async (req, res) => {
   const { email, username, password } = req.body;
-
+console.log('inside authcontroller')
   try {
     // 1. Check Admin by username
-    if (username) {
-      const admin = await Admin.findOne({ username });
-      if (admin && (await admin.matchPassword(password))) {
+    if (email) {
+      console.log('inside username', email)
+      const admin = await Admin.findOne({ email });
+      console.log('after admin check', admin.password)
+      console.log('password', password)
+      console.log('admin.password ==== password', password === admin.password)
+      if (admin && password === admin.password) {  //await bcrypt.compare(password, admin.password)    
+        console.log('entered')  
         return res.json({
           token: generateToken(admin._id, 'admin'),
           role: 'admin',

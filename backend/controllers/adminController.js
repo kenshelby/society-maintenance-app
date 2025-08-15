@@ -8,9 +8,9 @@ const generateToken = (id) => {
   });
 };
 
-const loginAdmin = async (req, res) => {
+const login = async (req, res) => {
   const { email, password } = req.body;
-
+  console.log('this is from ui', req.body)
   try {
     const admin = await Admin.findOne({ email });
     console.log('Entered password:', password);
@@ -32,4 +32,4 @@ const loginAdmin = async (req, res) => {
   }
 };
 
-module.exports = { loginAdmin };
+module.exports = { login };
