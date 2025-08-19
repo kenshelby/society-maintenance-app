@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../utils/api';
+import "./Login.css";
+
 
 const Login = () => {
   const [formData, setFormData] = useState({ emailOrUsername: '', password: '' });
@@ -34,20 +36,20 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className="login-container">
       {/* Left side */}
-      <div className="w-1/2 bg-pink-200 flex items-center justify-center">
-        <h1 className="text-4xl font-bold text-pink-700">Welcome Back!</h1>
+      <div className="left-section">
+        <h1>Sri Sai Baba Apartment</h1>
       </div>
 
-      {/* Right side - login form in box */}
-      <div className="w-1/2 flex items-center justify-center bg-white">
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-8 rounded-lg shadow-md w-full max-w-sm"
-        >
-          <h2 className="text-2xl mb-6 font-semibold text-center">Login</h2>
-          {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
+      {/* Divider */}
+      <div className="divider"></div>
+
+      {/* Right side - login form */}
+      <div className="right-section">
+        <form onSubmit={handleSubmit} className="login-form">
+          <h2>Login</h2>
+          {error && <p className="error">{error}</p>}
 
           <input
             type="text"
@@ -55,7 +57,6 @@ const Login = () => {
             placeholder="Email or Username"
             value={formData.emailOrUsername}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded mb-4"
             required
           />
           <input
@@ -64,15 +65,9 @@ const Login = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded mb-6"
             required
           />
-          <button
-            type="submit"
-            className="w-full bg-pink-500 hover:bg-pink-600 text-white font-semibold py-2 rounded"
-          >
-            Login
-          </button>
+          <button type="submit">Login</button>
         </form>
       </div>
     </div>

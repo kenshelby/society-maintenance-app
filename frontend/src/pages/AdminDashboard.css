@@ -24,17 +24,22 @@
   
   /* Sidebar */
   .sidebar {
-    background-color: #333;
-    width: 0; /* closed by default */
-    overflow-x: hidden;
-    transition: width 0.3s ease;
-    padding-top: 20px;
-    min-height: calc(100vh - 50px); /* full height minus navbar */
-  }
-  
-  .sidebar.open {
-    width: 250px;
-  }
+    background-color: #333;          
+    width: 250px;                    
+    position: fixed;                 
+    top: 50px;                       
+    left: -250px;                    
+    height: calc(100vh - 50px);      
+    transition: left 0.3s ease;      
+    z-index: 100;                    
+    padding-top: 20px;               
+    overflow-y: auto;                
+}
+
+.sidebar.open {
+    left: 0;                         
+}
+
   
   /* Sidebar items */
   .sidebar h2 {
@@ -68,4 +73,32 @@
   .sidebar-item.close:hover {
     background-color: #004477;
   }
+
+  .main-content {
+    margin-left: 0;         /* default */
+    padding: 20px;
+  }
+  
+  .sidebar.open ~ .main-content { /* NEW */
+    margin-left: 250px; /* push content when sidebar is open */
+  }
+  
+  /* ✅ Added table styles */
+  .main-content table { /* NEW */
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+  }
+  
+  .main-content th, 
+  .main-content td { /* NEW */
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .main-content th { /* NEW */
+    background: #f2f2f2;
+  }
+  
   
