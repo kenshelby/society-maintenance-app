@@ -1,0 +1,65 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+.add-flat-container {
+    display: flex;
+    justify-content: center;   /* horizontal center */
+    align-items: flex-start;   /* stick towards top */
+    width: 100%;               /* full width */
+    min-height: 100vh;         /* full height of viewport */
+    padding-top: 3rem;         /* space from top */
+    box-sizing: border-box;    /* include padding in size */
+  }
+  
+  
+  .add-flat-form {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 2rem;
+    width: 350px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  
+  .add-flat-form h2 {
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #333;
+  }
+  
+  .add-flat-form label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .add-flat-form select {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 1.2rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-size: 0.95rem;
+  }
+  
+  .add-flat-form button {
+    width: 100%;
+    padding: 0.8rem;
+    background: #4cafef;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+  
+  .add-flat-form button:hover {
+    background: #3a97d6;
+  }
+  

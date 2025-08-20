@@ -52,26 +52,49 @@ export default function AdminDashboard() {
 
   {/* Main content area */}
         <div className="main-content">
-          {/* Your actual dashboard content goes here */}
-          <table border="1" cellPadding="10">
-        <thead>
-          <tr>
-            <th>Flat No</th>
-            <th>Owner</th>
-            <th>Members</th>
-          </tr>
-        </thead>
-        <tbody>
-          {flats.map(flat => (
-            <tr key={flat._id}>
-              <td>{flat.flatNumber}</td>
-              <td>{flat.owner?.name}</td>
-              <td>{flat.members?.length || 0}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+          {/* actual dashboard content goes here */}
+          <div className="table-header">
+          <h2>Flats</h2>
+          <button className="add-flat-btn" onClick={() => navigate("/admin/add-flat")}>
+            + Add Flat
+          </button>
+        </div>
+            <table border="1" cellPadding="10">
+              <thead>
+                <tr>
+                  <th>Flat No</th>
+                  <th>Owner</th>
+                  <th>Members</th>
+                </tr>
+              </thead>
+              <tbody>
+                {flats.map(flat => (
+                  <tr key={flat._id}>
+                    <td>{flat.flatNumber}</td>
+                    <td>{flat.owner?.name}</td>
+                    <td>{flat.members?.length || 0}</td>
+                  </tr>
+                ))}
+              </tbody>
+          </table>
+          {/* Pagination Controls */}
+          <div className="pagination">
+            <button 
+              disabled={page === 1} 
+              onClick={() => setPage(page - 1)}
+            >
+              Previous
+            </button>
 
+            <span> Page {page} of {totalPages} </span>
+
+            <button 
+              disabled={page === totalPages} 
+              onClick={() => setPage(page + 1)}
+            >
+              Next
+            </button>
+          </div>
         </div>
 </div>
   );

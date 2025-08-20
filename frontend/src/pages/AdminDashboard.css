@@ -100,5 +100,50 @@
   .main-content th { /* NEW */
     background: #f2f2f2;
   }
+
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 15px 0;
+  }
+  
+  .add-flat-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .add-flat-btn:hover {
+    background-color: #45a049;
+  }
+
+  .pagination {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .pagination button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background: #4cafef;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+  }
+  
+  
   
   

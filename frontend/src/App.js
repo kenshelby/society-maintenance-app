@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import UserDashboard from './pages/UserDashboard';
+import AddFlatForm from "./pages/AddFlatForm";
 
 function ProtectedRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -19,6 +20,7 @@ function App() {
               <AdminDashboard />
             </ProtectedRoute>
           } />
+        <Route path="/admin/add-flat" element={<AddFlatForm />} />
         <Route path="/user-dashboard"
           element={
             <ProtectedRoute>
