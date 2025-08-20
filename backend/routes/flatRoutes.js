@@ -5,27 +5,20 @@ const User = require('../models/User');
 const router = express.Router();
 
 // Add a new flat for a user
-router.post('/:userId', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const { flatNumber, block, maintenanceDue } = req.body;
-    const user = await User.findById(req.params.userId);
-
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Create flat
+    const { block, floor, unit, maintenanceDue, status } = req.body;
+console.log("inside flatRoutes.js")
+console.log(req.body)
+console.log({ block, floor, unit, maintenanceDue, status })
     const flat = await Flat.create({
-      flatNumber,
       block,
+      floor,
+      unit,
       maintenanceDue,
-      owner: user._id,
+      status: status || 'vacant'   // ✅ take passed status, else default vacant
     });
-
-    // Link flat to user
-    user.flats.push(flat._id);
-    await user.save();
-
+console.log("after create method")
     res.status(201).json(flat);
   } catch (error) {
     console.error(error);
@@ -36,8 +29,21 @@ router.post('/:userId', async (req, res) => {
 // Get all flats
 router.get('/', async (req, res) => {
   try {
-    const flats = await Flat.find().populate('owner', 'name email');
-    res.json(flats);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const total = await Flat.countDocuments();
+    const flats = await Flat.find()
+      .populate('owner', 'name email')
+      .skip(skip)
+      .limit(limit);
+
+    res.json({
+      flats,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
