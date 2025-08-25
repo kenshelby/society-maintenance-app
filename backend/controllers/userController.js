@@ -8,22 +8,22 @@ const generateToken = (id) => {
 };
 
 const registerUser = async (req, res) => {
-  const { name, flatNumber, email, password } = req.body;
+  const { name, email, phone, password } = req.body;
 
   try {
-    const userExists = await User.findOne({ email });
+    const userExists = await User.findOne({ $or: [{ email }, { phone }] });
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const user = await User.create({ name, flatNumber, email, password });
+    const user = await User.create({ name, email, phone, password });
 
     if (user) {
       res.status(201).json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        flatNumber: user.flatNumber,
+        phone: user.phone,
         token: generateToken(user._id),
       });
     } else {
@@ -36,17 +36,18 @@ const registerUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-  const { email, password } = req.body;
-
+  const { emailOrPhone, password } = req.body;
   try {
-    const user = await User.findOne({ email });
-
+    const user = await User.findOne({ $or: [
+      { email: req.body.emailOrPhone }, 
+      { phone: req.body.emailOrPhone }
+    ]  });
     if (user && (await user.matchPassword(password))) {
       res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        flatNumber: user.flatNumber,
+        phone: user.phone,
         token: generateToken(user._id),
       });
     } else {

@@ -9,38 +9,37 @@ const generateToken = (id, role) => {
 
 // Generic login for Admin and User
 exports.login = async (req, res) => {
-  const { email, username, password } = req.body;
-console.log('inside authcontroller')
+  const { emailOrUsername, password } = req.body;
   try {
-    // 1. Check Admin by username
-    if (email) {
-      console.log('inside username', email)
-      const admin = await Admin.findOne({ email });
-      console.log('after admin check', admin.password)
-      console.log('password', password)
-      console.log('admin.password ==== password', password === admin.password)
-      if (admin && password === admin.password) {  //await bcrypt.compare(password, admin.password)    
-        console.log('entered')  
+    // 1️⃣ Check Admin by email
+    const admin = await Admin.findOne({ email: emailOrUsername });
+    if (admin) {
+      const isMatch = password === admin.password; // or bcrypt.compare(password, admin.password) if hashed
+      if (isMatch) {
         return res.json({
           token: generateToken(admin._id, 'admin'),
           role: 'admin',
           name: admin.username,
         });
+      } else {
+        return res.status(401).json({ message: 'Invalid credentials' });
       }
     }
 
-    // 2. Check User by email
-    if (email) {
-      const user = await User.findOne({ email });
-      if (user && (await user.matchPassword(password))) {
-        return res.json({
-          token: generateToken(user._id, 'user'),
-          role: 'user',
-          name: user.name,
-        });
-      }
+    // 2️⃣ Check User by email or phone
+    const user = await User.findOne({
+      $or: [{ email: emailOrUsername }, { phone: emailOrUsername }]
+    });
+
+    if (user && (await user.matchPassword(password))) {
+      return res.json({
+        token: generateToken(user._id, 'user'),
+        role: 'user',
+        name: user.name,
+      });
     }
 
+    // 3️⃣ If neither matched
     return res.status(401).json({ message: 'Invalid credentials' });
   } catch (error) {
     console.error(error);

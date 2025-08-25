@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema(
     },
     flatNumber: {
       type: String,
-      required: [true, 'Please enter your flat number'],
     },
     phone: {
       type: String,

@@ -5,8 +5,19 @@ import "./Login.css";
 
 
 const Login = () => {
-  const [formData, setFormData] = useState({ emailOrUsername: '', password: '' });
+  const [isLogin, setIsLogin] = useState(true); // 👈 added toggle state
+  const [formData, setFormData] = useState({
+    emailOrUsername: '',
+    username: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: ''
+  });
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -17,21 +28,41 @@ const Login = () => {
     e.preventDefault();
     setError('');
     try {
-      const payload = formData.emailOrUsername.includes('@')
-        ? { email: formData.emailOrUsername, password: formData.password }
-        : { username: formData.emailOrUsername, password: formData.password };
+      if (isLogin) {
+        // ---- LOGIN ----
+        const payload = { 
+              emailOrUsername: formData.emailOrUsername, 
+              password: formData.password 
+        };
+            
+        const { data } = await API.post('/auth/login', payload);
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('role', data.role);
 
-      const { data } = await API.post('/auth/login', payload);
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('role', data.role);
-
-      if (data.role === 'admin') {
-        navigate('/admin-dashboard');
+        if (data.role === 'admin') {
+          navigate('/admin-dashboard');
+        } else {
+          navigate('/user-dashboard');
+        }
       } else {
-        navigate('/user-dashboard');
+        // ---- SIGNUP ----
+        if (formData.password !== formData.confirmPassword) {
+          setError("Passwords do not match");
+          return;
+        }
+        const payload = {
+          name: formData.username,
+          email: formData.email,
+          phone: formData.phone,
+          password: formData.password
+        };
+
+        await API.post('/user/register', payload);
+        alert("Signup successful! Please login.");
+        setIsLogin(true); // switch back to login after signup
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed');
+      setError(err.response?.data?.message || 'Action failed');
     }
   };
 
@@ -45,30 +76,116 @@ const Login = () => {
       {/* Divider */}
       <div className="divider"></div>
 
-      {/* Right side - login form */}
+      {/* Right side - login/signup form */}
       <div className="right-section">
         <form onSubmit={handleSubmit} className="login-form">
-          <h2>Login</h2>
+          <h2>{isLogin ? "Login" : "Sign Up"}</h2>
           {error && <p className="error">{error}</p>}
 
-          <input
-            type="text"
-            name="emailOrUsername"
-            placeholder="Email or Username"
-            value={formData.emailOrUsername}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <button type="submit">Login</button>
+          {isLogin ? (
+            <>
+              <input
+                type="text"
+                name="emailOrUsername"
+                placeholder="Email, Username or Phone"
+                value={formData.emailOrUsername}
+                onChange={handleChange}
+                required
+              />
+
+              {/* Password field with eye button 👇 */}
+              <div className="password-field">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <span
+                  className="toggle-eye"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </span>
+              </div>
+            </>
+          ) : (
+            <>
+              <input
+                type="text"
+                name="username"
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+
+              {/* Password field with eye button 👇 */}
+              <div className="password-field">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <span
+                  className="toggle-eye"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? "🙈" : "👁️"}
+                </span>
+              </div>
+
+              <div className="password-field">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    name="confirmPassword"
+                    placeholder="Confirm Password"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
+                  <span
+                    className="toggle-eye"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  >
+                    {showConfirmPassword ? "🙈" : "👁️"}
+                </span>
+              </div>
+            </>
+          )}
+
+          <button type="submit">{isLogin ? "Login" : "Sign Up"}</button>
+          {/* Toggle link */}
+        <p className="toggle-text">
+          {isLogin ? "Don't have an account?" : "Already have an account?"}
+          <span onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? " Sign Up" : " Login"}
+          </span>
+        </p>
         </form>
+
+        
       </div>
     </div>
   );
