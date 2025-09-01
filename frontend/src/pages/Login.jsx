@@ -11,6 +11,7 @@ const Login = () => {
     username: '',
     email: '',
     phone: '',
+    role: '',
     password: '',
     confirmPassword: ''
   });
@@ -30,36 +31,38 @@ const Login = () => {
     try {
       if (isLogin) {
         // ---- LOGIN ----
-        const payload = { 
-              emailOrUsername: formData.emailOrUsername, 
-              password: formData.password 
-        };
-            
-        const { data } = await API.post('/auth/login', payload);
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('role', data.role);
+          const payload = { 
+                emailOrUsername: formData.emailOrUsername, 
+                password: formData.password 
+          };
+              
+          const { data } = await API.post('/auth/login', payload);
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('role', data.role);
+          localStorage.setItem('user', JSON.stringify(data));
 
-        if (data.role === 'admin') {
-          navigate('/admin-dashboard');
-        } else {
-          navigate('/user-dashboard');
-        }
+          if (data.role === 'admin') {
+            navigate('/admin-dashboard');
+          } else {
+            navigate('/user-dashboard');
+          }
       } else {
         // ---- SIGNUP ----
-        if (formData.password !== formData.confirmPassword) {
-          setError("Passwords do not match");
-          return;
-        }
-        const payload = {
-          name: formData.username,
-          email: formData.email,
-          phone: formData.phone,
-          password: formData.password
-        };
+          if (formData.password !== formData.confirmPassword) {
+            setError("Passwords do not match");
+            return;
+          }
+          const payload = {
+            name: formData.username,
+            email: formData.email,
+            phone: formData.phone,
+            role: formData.role,
+            password: formData.password
+          };
 
-        await API.post('/user/register', payload);
-        alert("Signup successful! Please login.");
-        setIsLogin(true); // switch back to login after signup
+          await API.post('/user/register', payload);
+          alert("Signup successful! Please login.");
+          setIsLogin(true); // switch back to login after signup
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Action failed');
@@ -137,7 +140,16 @@ const Login = () => {
                 onChange={handleChange}
                 required
               />
-
+              <div className="role-selection">
+                <label>
+                  <input type="radio" name="role" value="owner" required />
+                  <span>Owner</span>
+                </label>
+                <label>
+                  <input type="radio" name="role" value="tenant" required />
+                  <span>Tenant</span>
+                </label>
+              </div>
               {/* Password field with eye button 👇 */}
               <div className="password-field">
                 <input

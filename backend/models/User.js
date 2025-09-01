@@ -18,12 +18,19 @@ const userSchema = new mongoose.Schema(
       required: [true, 'Please enter your password'],
       minlength: 6,
     },
-    flatNumber: {
-      type: String,
-    },
+
+    flats: [{ type: mongoose.Schema.Types.ObjectId, ref: "Flat" }],
+
     phone: {
       type: String,
     },
+
+    role: {
+      type: String,
+      enum: ["owner", "tenant"],
+      required: true, // must select one during signup
+    },
+    
     isActive: {
       type: Boolean,
       default: true,
