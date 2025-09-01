@@ -30,12 +30,15 @@ exports.login = async (req, res) => {
     const user = await User.findOne({
       $or: [{ email: emailOrUsername }, { phone: emailOrUsername }]
     });
-
+    
+    const { password, ...userWithoutPassword } = user.toObject();
+    
     if (user && (await user.matchPassword(password))) {
       return res.json({
         token: generateToken(user._id, 'user'),
         role: 'user',
         name: user.name,
+        user: userWithoutPassword
       });
     }
 
