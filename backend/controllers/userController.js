@@ -16,7 +16,7 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const user = await User.create({ name, email, phone, password });
+    const user = await User.create({ name, email, phone, role, password });
 
     if (user) {
       res.status(201).json({
@@ -42,12 +42,17 @@ const loginUser = async (req, res) => {
       { email: req.body.emailOrPhone }, 
       { phone: req.body.emailOrPhone }
     ]  });
+
+    const { password, ...userWithoutPassword } = user.toObject();
+
     if (user && (await user.matchPassword(password))) {
       res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
         phone: user.phone,
+        role: user.role,
+        user: userWithoutPassword,
         token: generateToken(user._id),
       });
     } else {
