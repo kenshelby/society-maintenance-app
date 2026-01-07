@@ -1,0 +1,32 @@
+.user-sidebar {
+  width: 220px;
+  background-color: #1f2937;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;       /* full height */
+  flex-shrink: 0;      /* prevent shrinking */
+}
+
+.user-sidebar p {
+  cursor: pointer;
+}
+
+.user-sidebar p:hover {
+  color: #97999b;
+}
+
+@media (max-width: 768px) {
+  .user-sidebar {
+    width: 160px;   /* shrink width */
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-sidebar {
+    width: 120px;   /* even smaller for iPhone SE type screens */
+    font-size: 0.8rem;
+  }
+}
