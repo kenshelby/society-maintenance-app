@@ -35,7 +35,6 @@ const Login = () => {
                 emailOrUsername: formData.emailOrUsername, 
                 password: formData.password 
           };
-              
           const { data } = await API.post('/auth/login', payload);
           localStorage.setItem('token', data.token);
           localStorage.setItem('role', data.role);
@@ -59,7 +58,6 @@ const Login = () => {
             role: formData.role,
             password: formData.password
           };
-
           await API.post('/user/register', payload);
           alert("Signup successful! Please login.");
           setIsLogin(true); // switch back to login after signup
@@ -142,11 +140,25 @@ const Login = () => {
               />
               <div className="role-selection">
                 <label>
-                  <input type="radio" name="role" value="owner" required />
+                  <input
+                    type="radio"
+                    name="role"
+                    value="owner"
+                    checked={formData.role === "owner"}
+                    onChange={handleChange}
+                    required
+                  />
                   <span>Owner</span>
                 </label>
                 <label>
-                  <input type="radio" name="role" value="tenant" required />
+                  <input
+                    type="radio"
+                    name="role"
+                    value="tenant"
+                    checked={formData.role === "tenant"}
+                    onChange={handleChange}
+                    required
+                  />
                   <span>Tenant</span>
                 </label>
               </div>
