@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 import API from '../utils/api';
+import UsersTable from '../components/UsersTable.jsx'
 
 
 export default function AdminDashboard() {
@@ -44,7 +45,7 @@ export default function AdminDashboard() {
         <div className={`sidebar ${isOpen ? "open" : ""}`}>
           <h2>Menu</h2>
           <p className="sidebar-item">Dashboard</p>
-          <p className="sidebar-item">Users</p>
+          <p className="sidebar-item" onClick={() => navigate("../src/components/UsersTable")}>Users</p>
           <p className="sidebar-item">Settings</p>
           <p className="sidebar-item logout" onClick={handleLogout}>Logout</p>
           <p className="sidebar-item close" onClick={() => setIsOpen(false)}>Close</p>
@@ -54,17 +55,18 @@ export default function AdminDashboard() {
         <div className="main-content">
           {/* actual dashboard content goes here */}
           <div className="table-header">
-          <h2>Flats</h2>
-          <button className="add-flat-btn" onClick={() => navigate("/admin/add-flat")}>
-            + Add Flat
-          </button>
-        </div>
+            <h2>Flats</h2>
+            <button className="add-flat-btn" onClick={() => navigate("/admin/add-flat")}>
+              + Add Flat
+            </button>
+          </div>
             <table border="1" cellPadding="10">
               <thead>
                 <tr>
                   <th>Flat No</th>
                   <th>Owner</th>
                   <th>Members</th>
+                  <th>phone</th>
                 </tr>
               </thead>
               <tbody>
@@ -73,6 +75,7 @@ export default function AdminDashboard() {
                     <td>{flat.flatNumber}</td>
                     <td>{flat.owner?.name}</td>
                     <td>{flat.members?.length || 0}</td>
+                    <td>{flat.owner?.phone || "N/A"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -95,6 +98,7 @@ export default function AdminDashboard() {
               Next
             </button>
           </div>
+          <Outlet />
         </div>
 </div>
   );
