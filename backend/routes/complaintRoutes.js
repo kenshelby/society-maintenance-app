@@ -5,8 +5,8 @@ const router = express.Router();
 // Create a new complaint
 router.post('/', async (req, res) => {
   try {
-    const { title, description, category, createdBy } = req.body;
-    const complaint = await Complaint.create({ title, description, category, createdBy });
+    const { title, description, category } = req.body;
+    const complaint = await Complaint.create({ title, description, category, createdBy: req.user._id });
     res.status(201).json(complaint);
   } catch (error) {
     console.error(error);
