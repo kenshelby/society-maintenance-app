@@ -7,14 +7,16 @@ const ComplaintList = ({ complaintItem }) => {
             <label>
                 <span style={{ padding: '10px 20px' }}>Title: </span>
                <p style={{ padding: '10px 20px' }} >{complaintItem.title}</p>
+            </label>
             <label>
-                <span style={{ padding: '10px 20px' }}>Description: </span>
+               <span style={{ padding: '10px 20px' }}>Description: </span>
                <p style={{ padding: '10px 20px' }} >{complaintItem.description}</p>
             </label>
-            <label></label>
+            <label>
                <span style={{ padding: '10px 20px' }}>Category: </span>
                <p style={{ padding: '10px 20px' }} >{complaintItem.category}</p>
             </label>
+            
         </div>
     )
 }
