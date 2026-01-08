@@ -10,12 +10,8 @@ const generateToken = (id) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log('this is from ui', req.body)
   try {
     const admin = await Admin.findOne({ email });
-    console.log('Entered password:', password);
-    console.log('DB hash:', admin.password);
-    console.log('Match?', await admin.matchPassword(password));
     if (admin && (await admin.matchPassword(password))) {
       res.json({
         _id: admin._id,

@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Flat = require('../models/Flat');
 const jwt = require('jsonwebtoken');
 
 const generateToken = (id) => {
@@ -8,8 +9,7 @@ const generateToken = (id) => {
 };
 
 const registerUser = async (req, res) => {
-  const { name, email, phone, password } = req.body;
-
+  const { name, email, phone, role, password } = req.body;
   try {
     const userExists = await User.findOne({ $or: [{ email }, { phone }] });
     if (userExists) {
@@ -24,6 +24,7 @@ const registerUser = async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        role: user.role,
         token: generateToken(user._id),
       });
     } else {
@@ -64,4 +65,26 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+const getUsers = async (req, res) =>{
+try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const total = await User.countDocuments();
+    const flats = await User.find()
+          .populate('flats', 'flatNumber')
+          .skip(skip)
+          .limit(limit);
+    res.json({
+      flats,
+      totalPages: Math.ceil(total / limit),
+      currentPage: page,
+    });
+} catch (error) {
+  console.log(error)
+  res.status(500).json({ message: 'Server error' });
+}
+}
+
+module.exports = { registerUser, loginUser, getUsers };
