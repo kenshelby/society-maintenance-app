@@ -12,16 +12,20 @@ const FlatSchema = new mongoose.Schema({
     enum: ["vacant", "occupied", "to-let", "for-sale"], 
     default: "vacant" 
   },
-
+  type: { type: String, enum: ["1BHK", "2BHK", "3BHK"] },
+  area: { type: Number},
   owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   tenants: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   maintenanceDue: { type: Number, default: 0 },
   lastPaidOn: { type: Date }
 }, { timestamps: true });
-console.log("inside mongo")
 // Pre-save hook to auto-generate flatNumber
 FlatSchema.pre("save", function(next) {
   this.flatNumber = `${this.block}-${this.floor}-${this.unit}`;
+  const rate = 1.25; // ₹ per sqft (could move to config/DB later)
+  if (this.area) {
+    this.maintenanceDue = this.area * rate;
+  }
   next();
 });
 

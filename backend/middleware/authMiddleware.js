@@ -16,8 +16,14 @@ const protect = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       // Check if admin or user
-      req.admin = await Admin.findById(decoded.id).select('-password');
-      req.user = await User.findById(decoded.id).select('-password');
+      if (decoded.role === 'admin') {
+        req.admin = await Admin.findById(decoded.id).select('-password');
+      } else {
+        console.log("we are in auth middleware");
+        req.user = await User.findById(decoded.id).select('-password');
+        console.log(req.user);
+      }
+
 
       next();
     } catch (error) {
