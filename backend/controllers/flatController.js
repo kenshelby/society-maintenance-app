@@ -48,7 +48,7 @@ exports.getFlats = async (req, res) => {
 // Get flats of a specific user
 exports.getUserFlats = async (req, res) => {
   try {
-    const user = await User.findById(req.params.userId).populate('flats');
+    const user = await User.findById(req.user._id).populate('flats'); //req.params.userId, changed
     if (!user) return res.status(404).json({ message: 'User not found' });
     res.json(user.flats);
   } catch (error) {
