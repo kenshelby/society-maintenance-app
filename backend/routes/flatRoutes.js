@@ -10,7 +10,7 @@ const { protect } = require('../middleware/authMiddleware');
 
 router.post('/', addFlat);                // add new flat
 router.get('/', getFlats);                // list all flats (pagination)
-router.get('/user/:userId', getUserFlats); // get flats of a specific user
+router.get('/me', protect, getUserFlats); // for specific user //changed '/user/:userId'>>use it when admin changes to '/me'
 router.post('/claim/:id', protect, claimFlat); // claim a flat
 
 module.exports = router;
