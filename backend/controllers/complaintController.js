@@ -14,11 +14,18 @@ exports.addComplaint = async (req, res) => {
 
 exports.getComplaint = async (req, res) => {
     try {
-      const complaints = await Complaint.find().populate('createdBy', 'name email');
-      res.json(complaints);
+        const page = Number(req.body.page) || 1;
+        const limit = Number(req.body.limit) || 10;
+        const skip = (page - 1) * limit;
+        const complaints = await Complaint.find()
+        .sort( {creattedAt: -1} )
+        .limit(limit)
+        .skip(skip)
+        .populate('createdBy', 'name email');
+        res.json(complaints);
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
 }
 
