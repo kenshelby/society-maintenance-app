@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 const Friends = () =>{
    return(
-      <div>
-        <p>this  is friends page</p>
+      <div className='friend-container'>
+        <p>img</p>
+        <p>friend name</p>
       </div>
     );
 };
