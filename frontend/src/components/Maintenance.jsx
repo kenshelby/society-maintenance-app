@@ -1,8 +1,14 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Maintenance = () =>{
-    return<></>
+    return(
+        <div className='maintenance-container'>
+            <p>your current due is: Rs</p>
+            <p>Last paid on:</p>
+            <p>Next due on:</p>
+        </div>
+    )
 }
 
 
