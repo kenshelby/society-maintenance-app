@@ -6,6 +6,7 @@ const Friends = () =>{
       <div className='friend-container'>
         <p>img</p>
         <p>friend name</p>
+        <div className='recommendation'></div>
       </div>
     );
 };
