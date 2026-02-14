@@ -2,7 +2,11 @@ import React from 'react';
 import { useNavigate } from "react-router-dom";
 
 const Polls = () =>{
-    return<></>
+    return(
+        <div>
+            this is polling page
+        </div>
+    )
 }
 
 
